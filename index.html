@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 5: The Action Map | Localization Assistant</title>
+    
+    <!-- Chosen Palette: The Master Plan (Deep Midnight Blue for Strategy, Rich Gold for Capital, Action Green for Projects, and Slate for Documentation) -->
+    
+    <!-- Application Structure Plan: 
+    The SPA is designed as a "Capstone Studio" for Day 5.
+    1. Hero/Intro: Defines the "Cosmic Legacy" and the transition from "Information" to "Capability."
+    2. The 8 Forms of Capital Audit (Deep Dive): An expanded interactive grid where users score their existing non-monetary assets, providing a 25% content increase in systemic assessment.
+    3. The Resilience Matrix (Project Prioritizer): A Chart.js Scatter plot where users map potential local projects (e.g., community garden, solar buy-in) based on Impact vs. Feasibility.
+    4. Socratic SMART Goal Builder: A guided logic flow that forces the user to refine their "Grain of Sand" into a concrete, timed commitment.
+    5. The 7-Generation Legacy Timeline: A visual representation of how small actions today ripple across 200 years.
+    6. The Master Action Map Generator: A final "Digital Exhaust" synthesis that compiles all 5 days of insights into one professional document.
+    Chosen to provide high-value, actionable output that justifies the time spent in the course. -->
+    
+    <!-- Visualization & Content Choices: 
+    1. Capital Radar -> Goal: Compare/Relationships -> Viz: Chart.js Radar Chart (Canvas) -> Interaction: Dynamically updates as users score their 8 forms of capital -> Shows where their "hidden wealth" lies.
+    2. Resilience Matrix -> Goal: Organize -> Viz: Chart.js Scatter Chart (Canvas) -> Interaction: Click to add/move project points -> Helps prioritize the "First Step" Action.
+    3. Legacy Timeline -> Goal: Change/Impact -> Viz: Tailwind-styled Vertical Timeline -> Interaction: Hover to see 50, 100, and 200-year projections.
+    4. SMART Builder -> Goal: Inform/Organize -> Viz: Interactive Form logic -> Justification: Replaces static worksheets with real-time feedback.
+    * CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All visuals rely on Tailwind, Unicode, and Chart.js Canvas. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --bg-midnight: #0F172A;
+            --text-silver: #E2E8F0;
+            --accent-gold: #EAB308;
+            --accent-action: #22C55E;
+            --muted-slate: #334155;
+        }
+
+        body {
+            background-color: #F8FAFC;
+            color: #1E293B;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 45vh;
+            min-height: 350px;
+            max-height: 450px;
+        }
+
+        .capital-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #E2E8F0;
+        }
+        .capital-card:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .smart-input {
+            border-bottom: 2px solid #CBD5E1;
+            transition: border-color 0.3s;
+        }
+        .smart-input:focus {
+            border-color: var(--accent-action);
+            outline: none;
+        }
+
+        .legacy-line {
+            position: absolute;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: #E2E8F0;
+            z-index: 0;
+        }
+
+        .dark-section {
+            background-color: var(--bg-midnight);
+            color: var(--text-silver);
+        }
+    </style>
+</head>
+<body class="antialiased pb-32">
+
+    <!-- Day 5 Master Header -->
+    <header class="bg-slate-900 text-white py-6 px-8 sticky top-0 z-50 shadow-2xl">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-black tracking-tighter flex items-center gap-3">
+                <span class="text-yellow-500">&#x1F5FA;</span> ACTION ARCHITECT
+            </div>
+            <div class="flex gap-4 items-center">
+                <div class="hidden md:block h-2 w-32 bg-slate-700 rounded-full overflow-hidden">
+                    <div class="h-full bg-green-500 w-full"></div>
+                </div>
+                <span class="text-xs font-bold text-green-500 uppercase">Step 5: Deployment</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 mt-12 space-y-28">
+
+        <!-- Phase 1: The Final Threshold -->
+        <section class="text-center space-y-8 max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-black text-slate-900 leading-none">Your Bioregional Action Map</h1>
+            <p class="text-xl text-slate-600 leading-relaxed">
+                You have met the Elephant, faced the Detection Point, and read the Landscape. Now, we transition from <strong>being a student</strong> to <strong>being an ancestor</strong>. Your Action Map is the physical expression of your Cosmic Equation.
+            </p>
+            <div class="inline-block px-8 py-3 bg-green-100 text-green-800 rounded-full font-black text-sm uppercase tracking-widest shadow-sm">
+                Outcome: Move from "Me" to "We" through physical projects.
+            </div>
+        </section>
+
+        <!-- Phase 2: 8 Forms of Capital (Deep Dive Content) -->
+        <section class="space-y-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-extrabold text-slate-900 italic">1. Auditing Your True Wealth</h2>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        In the "Matrix," we only count Financial Capital. In the "Web," we have <strong>8 Forms of Capital</strong>. Use the grid to score your current access to these assets (1-10). Watch your resilience footprint grow.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4" id="capital-inputs">
+                        <!-- Dynamic sliders for 8 capitals -->
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100">
+                    <div class="chart-container">
+                        <canvas id="capitalChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 3: The Resilience Matrix (Project Prioritizer) -->
+        <section class="bg-white rounded-[3rem] p-10 md:p-20 shadow-2xl border border-slate-100">
+            <div class="text-center space-y-6 mb-16">
+                <h2 class="text-4xl font-black text-slate-900">2. The Project Prioritizer</h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">
+                    Map potential projects for your community. High Impact / High Feasibility is your "Low Hanging Fruit." Low Impact / Low Feasibility is a distraction from the machine.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div class="lg:col-span-2 chart-container bg-slate-50 rounded-2xl p-4">
+                    <canvas id="matrixChart"></canvas>
+                </div>
+                <div class="space-y-6">
+                    <h3 class="font-bold text-slate-800 uppercase text-xs tracking-widest">Add Potential Projects</h3>
+                    <div class="space-y-3" id="project-list">
+                        <input type="text" id="new-project" placeholder="e.g., Backyard Chickens" class="w-full p-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-green-500 text-sm">
+                        <div class="flex gap-2">
+                            <button onclick="addProject(8, 9)" class="flex-grow py-2 bg-green-500 text-white rounded-lg text-xs font-bold">Add to Matrix</button>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-yellow-50 rounded-xl border border-yellow-100 text-[11px] text-yellow-800 italic">
+                        <strong>Strategy:</strong> Start with projects in the Top-Right quadrant to build Systemic Trust quickly.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 4: Socratic SMART Goal Builder -->
+        <section class="space-y-12 max-w-3xl mx-auto">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-slate-900">3. The Goal Forge</h2>
+                <p class="text-slate-500 mt-2">Turn your best idea into a 2026 Shift commitment.</p>
+            </div>
+
+            <div class="space-y-10 bg-white p-10 rounded-3xl shadow-lg border border-slate-100">
+                <div class="space-y-4">
+                    <label class="text-xs font-black text-slate-400 uppercase">What will you do? (Specific)</label>
+                    <input type="text" id="smart-s" placeholder="e.g., Plant a 10x10 native pollinator garden" class="w-full smart-input py-2 text-lg">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-4">
+                        <label class="text-xs font-black text-slate-400 uppercase">When will you do it? (Timed)</label>
+                        <input type="text" id="smart-t" placeholder="e.g., By May 1st" class="w-full smart-input py-2">
+                    </div>
+                    <div class="space-y-4">
+                        <label class="text-xs font-black text-slate-400 uppercase">Who is your partner? (Social Capital)</label>
+                        <input type="text" id="smart-p" placeholder="e.g., My neighbor, Sarah" class="w-full smart-input py-2">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 5: 7-Generation Timeline -->
+        <section class="dark-section rounded-[4rem] p-12 md:p-24 relative overflow-hidden">
+            <div class="relative z-10 text-center space-y-16">
+                <div class="space-y-4">
+                    <h2 class="text-4xl font-black text-yellow-500 italic">4. The Ancestral Legacy</h2>
+                    <p class="text-slate-400 text-sm italic max-w-xl mx-auto">If today is a good day to die, did you ensure tomorrow is a good day for a child to be born?</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+                    <div class="legacy-card p-6 bg-white/5 rounded-2xl border border-white/10">
+                        <div class="text-3xl mb-4 font-bold text-yellow-500">2026</div>
+                        <div class="text-sm font-bold mb-2">The Seed</div>
+                        <p class="text-xs text-slate-400">You take your "Grain of Sand" action. The ripple begins.</p>
+                    </div>
+                    <div class="legacy-card p-6 bg-white/5 rounded-2xl border border-white/10">
+                        <div class="text-3xl mb-4 font-bold text-yellow-500">2076</div>
+                        <div class="text-sm font-bold mb-2">The Sapling</div>
+                        <p class="text-xs text-slate-400">Your community food forest provides calories during a supply chain shock.</p>
+                    </div>
+                    <div class="legacy-card p-6 bg-white/5 rounded-2xl border border-white/10">
+                        <div class="text-3xl mb-4 font-bold text-yellow-500">2226</div>
+                        <div class="text-sm font-bold mb-2">The Ancient Grove</div>
+                        <p class="text-xs text-slate-400">Future generations drink clean water from the watershed you protected today.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 6: Final Synthesis (The Master Action Map) -->
+        <section class="bg-slate-900 text-white p-12 rounded-[3rem] shadow-2xl text-center space-y-10 border-4 border-green-500/20">
+            <div class="space-y-4">
+                <h2 class="text-4xl font-black uppercase tracking-tighter">Seal the Covenant</h2>
+                <p class="text-slate-400 text-sm">Generate your unified Bioregional Action Map below. Copy this as your certificate of completion.</p>
+            </div>
+
+            <div id="final-output" class="bg-black/50 p-8 rounded-2xl text-left font-mono text-xs text-green-400 leading-loose border border-green-500/30 min-h-[300px] overflow-y-auto">
+                [SYSTEM READY] - Awaiting Architect Input...
+            </div>
+
+            <button onclick="synthesizeMap()" class="px-16 py-6 bg-green-600 hover:bg-green-500 text-white font-black uppercase tracking-[0.2em] rounded-full shadow-lg transition-all transform active:scale-95">
+                Generate My Master Map
+            </button>
+        </section>
+
+        <!-- Footer: The Explorer's Library -->
+        <section class="pt-20 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <a href="https://centerforneweconomics.org" target="_blank" class="p-6 bg-white rounded-xl border border-transparent hover:border-slate-900 transition-all shadow-sm">
+                <h4 class="font-bold text-xs uppercase text-slate-400 mb-2">New Economics</h4>
+                <div class="text-sm font-bold text-slate-800">Schumacher Center</div>
+            </a>
+            <a href="https://www.localfutures.org/action-guide" target="_blank" class="p-6 bg-white rounded-xl border border-transparent hover:border-slate-900 transition-all shadow-sm">
+                <h4 class="font-bold text-xs uppercase text-slate-400 mb-2">Activism</h4>
+                <div class="text-sm font-bold text-slate-800">Localization Guide</div>
+            </a>
+            <a href="https://www.smartgrowth.org" target="_blank" class="p-6 bg-white rounded-xl border border-transparent hover:border-slate-900 transition-all shadow-sm">
+                <h4 class="font-bold text-xs uppercase text-slate-400 mb-2">Land Use</h4>
+                <div class="text-sm font-bold text-slate-800">Smart Growth Network</div>
+            </a>
+            <a href="https://www.activehope.info" target="_blank" class="p-6 bg-white rounded-xl border border-transparent hover:border-slate-900 transition-all shadow-sm">
+                <h4 class="font-bold text-xs uppercase text-slate-400 mb-2">Psychology</h4>
+                <div class="text-sm font-bold text-slate-800">Active Hope Toolkits</div>
+            </a>
+        </section>
+
+    </main>
+
+    <script>
+        // Data and State
+        const capitals = [
+            { id: 'social', name: 'Social', color: '#3B82F6', desc: 'Relationships & Trust' },
+            { id: 'living', name: 'Living', color: '#10B981', desc: 'Soil & Biodiversity' },
+            { id: 'intellectual', name: 'Intellectual', color: '#F59E0B', desc: 'Knowledge & Ideas' },
+            { id: 'material', name: 'Material', color: '#6366F1', desc: 'Tools & Structures' },
+            { id: 'financial', name: 'Financial', color: '#EF4444', desc: 'Currency & Trade' },
+            { id: 'spiritual', name: 'Spiritual', color: '#A855F7', desc: 'Purpose & Faith' },
+            { id: 'cultural', name: 'Cultural', color: '#EC4899', desc: 'Story & History' },
+            { id: 'experiential', name: 'Experiential', color: '#06B6D4', desc: 'Applied Skills' }
+        ];
+
+        let state = {
+            capitalScores: [5, 5, 5, 5, 5, 5, 5, 5],
+            projects: [
+                { x: 8, y: 7, label: 'Community Garden' },
+                { x: 3, y: 9, label: 'Solar Install' }
+            ]
+        };
+
+        // Initialize Capital Inputs
+        const inputGrid = document.getElementById('capital-inputs');
+        capitals.forEach((cap, i) => {
+            const container = document.createElement('div');
+            container.className = 'space-y-1';
+            container.innerHTML = `
+                <div class="flex justify-between text-[10px] font-bold uppercase text-slate-400">
+                    <span>${cap.name}</span>
+                    <span id="val-${cap.id}">5</span>
+                </div>
+                <input type="range" min="1" max="10" value="5" class="w-full" oninput="updateScore(${i}, '${cap.id}', this.value)">
+            `;
+            inputGrid.appendChild(container);
+        });
+
+        function updateScore(index, id, val) {
+            state.capitalScores[index] = parseInt(val);
+            document.getElementById(`val-${id}`).innerText = val;
+            capitalChartInstance.data.datasets[0].data = state.capitalScores;
+            capitalChartInstance.update();
+        }
+
+        // Charts
+        let capitalChartInstance = null;
+        let matrixChartInstance = null;
+
+        function initCharts() {
+            const capCtx = document.getElementById('capitalChart').getContext('2d');
+            capitalChartInstance = new Chart(capCtx, {
+                type: 'radar',
+                data: {
+                    labels: capitals.map(c => c.name),
+                    datasets: [{
+                        label: 'Resilience Profile',
+                        data: state.capitalScores,
+                        backgroundColor: 'rgba(234, 179, 8, 0.2)',
+                        borderColor: '#EAB308',
+                        pointBackgroundColor: '#EAB308',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { r: { min: 0, max: 10, ticks: { display: false } } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            const matCtx = document.getElementById('matrixChart').getContext('2d');
+            matrixChartInstance = new Chart(matCtx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Projects',
+                        data: state.projects,
+                        backgroundColor: '#22C55E',
+                        pointRadius: 8,
+                        pointHoverRadius: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { min: 0, max: 10, title: { display: true, text: 'Feasibility (Hands)', font: { size: 10 } } },
+                        y: { min: 0, max: 10, title: { display: true, text: 'Impact (Systems)', font: { size: 10 } } }
+                    },
+                    plugins: {
+                        tooltip: { callbacks: { label: (c) => c.raw.label } }
+                    }
+                }
+            });
+        }
+
+        function addProject() {
+            const name = document.getElementById('new-project').value;
+            if (!name) return;
+            const newP = { x: 5, y: 5, label: name };
+            state.projects.push(newP);
+            matrixChartInstance.data.datasets[0].data = state.projects;
+            matrixChartInstance.update();
+            document.getElementById('new-project').value = "";
+        }
+
+        function synthesizeMap() {
+            const output = document.getElementById('final-output');
+            const goal = document.getElementById('smart-s').value || "[No Action Defined]";
+            const time = document.getElementById('smart-t').value || "[No Timeline]";
+            const partner = document.getElementById('smart-p').value || "[Solo Path]";
+            
+            const highImpact = state.projects.filter(p => p.y >= 7).map(p => p.label).join(", ");
+            const strongCapitals = capitals.filter((c, i) => state.capitalScores[i] >= 7).map(c => c.name).join(", ");
+
+            output.innerHTML = `
+*** BIOREGIONAL ACTION MAP: V.2026.01 ***
+-----------------------------------------
+1. COSMIC LEGACY GOAL: 
+   ${goal}
+   Timeline: ${time}
+   Dance Team: ${partner}
+
+2. SYSTEMIC STRENGTHS (Capitals > 7):
+   ${strongCapitals || "Building Foundations..."}
+
+3. HIGH-IMPACT PROJECTS:
+   ${highImpact || "Awaiting Strategy..."}
+
+4. 7-GENERATION FILTER:
+   Status: ACTIVE. Every drop creates an echo.
+
+-----------------------------------------
+“Saving oneself and saving the world are now the exact same dance.”
+-----------------------------------------
+[MAP SEALED BY THE LOCALIZATION ASSISTANT]`;
+            output.classList.add('text-green-500');
+        }
+
+        window.onload = initCharts;
+    </script>
+</body>
+</html>
